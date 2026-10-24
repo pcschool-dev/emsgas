@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* เมนูรวมระบบ (/dsds/sysmenu.js) เปลี่ยนเป็นโหมดมืดตาม html[data-theme] → ตั้งตามโหมดของเครื่อง */
+(function () { var m = matchMedia('(prefers-color-scheme: dark)'), set = function () { document.documentElement.setAttribute('data-theme', m.matches ? 'dark' : 'light'); };
+  set(); m.addEventListener ? m.addEventListener('change', set) : m.addListener(set); })();</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="app/icons/apple-touch-icon.png">
 <meta name="theme-color" content="#7a1f2b">
