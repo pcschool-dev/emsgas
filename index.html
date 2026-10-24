@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="app/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#7a1f2b">
+<script src="/dsds/pwa.js" data-title="EMS" defer></script>
 <title>EMS (GAS) · โรงเรียนปากช่อง</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -42,6 +46,7 @@
   .g-role b { display: block; line-height: 1.3; }
   .g-role .s { display: block; font-size: .82rem; color: var(--muted); line-height: 1.35; }
   .g-role .ico { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; flex: none; background: var(--brand-soft); color: var(--brand); }
+  .g-role .ico.ok { background: #e3f3ea; color: #1f7a4d; }
   .g-role .ico.gold { background: #fcf8ee; color: #a87f2c; }
   .g-role .ico svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
   .g-msg { min-height: 20px; margin-top: 14px; font-size: .88rem; color: var(--bad); line-height: 1.5; }
@@ -83,6 +88,7 @@
     <div class="g-roles">
       <button class="g-role" type="button" data-contact="join"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span><b>ขอเพิ่มชื่อเข้าระบบ</b><span class="s">ครูใหม่ / ยังไม่มีอีเมลในระบบ</span></span></button>
       <button class="g-role" type="button" data-contact="login"><span class="ico gold"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5h13L22 12v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/></svg></span><span><b>ติดต่อแอดมิน / แจ้งปัญหา</b><span class="s">เข้าไม่ได้ ใช้งานติดขัด ข้อเสนอแนะ</span></span></button>
+      <button class="g-role" type="button" id="pwaBtn" hidden><span class="ico ok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg></span><span><b>ติดตั้งแอป EMS</b><span class="s">มีไอคอนบนหน้าจอ เปิดเต็มจอเหมือนแอป</span></span></button>
       <button class="g-role" type="button" data-sysmenu><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span><span><b>ระบบอื่นของโรงเรียน</b><span class="s">รับหนังสือ บุคลากร บัญชีผู้ใช้ และระบบอื่น ๆ</span></span></button>
     </div>
     <p class="g-note">ดูแลระบบโดย งานพัฒนาและบริการระบบดิจิทัลโรงเรียน</p>
@@ -130,6 +136,10 @@ document.querySelectorAll('[data-contact]').forEach(b => b.onclick = () => {
   if (appWin) { appWin.postMessage(Object.assign({ tes: 'emsgas-wrap', token: '' }, pendingCmd), '*'); pendingCmd = null; }
   gate.hidden = true; busy.hidden = true; if (!app.getAttribute('src')) app.src = EXEC; app.classList.add('on');
 });
+/* ติดตั้งแอป: ใช้ไฟล์กลาง /dsds/pwa.js (ซ่อนเมื่อเปิดจากแอปที่ติดตั้งแล้ว) */
+const pwaBtn = $('pwaBtn');
+if (!(window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true)) pwaBtn.hidden = false;
+pwaBtn.onclick = () => { if (window.DSDSPwa) DSDSPwa.install(); };
 btn.onclick = async () => {
   btn.disabled = true; msg.textContent = '';
   const p = new firebase.auth.GoogleAuthProvider(); p.setCustomParameters({ prompt: 'select_account' });
