@@ -102,7 +102,8 @@
 <script>
 /* หน้าครอบ EMS-GAS: เข้าสู่ระบบด้วย Firebase Auth ของ dss-pc (รองรับ Gmail) แล้วส่งบัตร (ID token) ให้แอปใน iframe
    แอปส่ง {tes:'emsgas', kind:'hello'|'refresh'|'login'|'logout'} มาที่หน้านี้ · ตอบกลับที่ ev.source เท่านั้น */
-const EXEC = 'https://script.google.com/macros/s/AKfycbxRvDaWrr-yfI2UffrdFlAg-vQnla6sP7FIdsHXrKlmAdvcT4AmotEHHzDyVrkVplrH/exec';
+/* /a/macros/pcschool.ac.th/ ตั้งใจ: แก้ปัญหาเบราว์เซอร์ที่ล็อกอิน Google หลายบัญชี (บัญชีแรกไม่ใช่บัญชีโรงเรียน) */
+const EXEC = 'https://script.google.com/a/macros/pcschool.ac.th/s/AKfycbxRvDaWrr-yfI2UffrdFlAg-vQnla6sP7FIdsHXrKlmAdvcT4AmotEHHzDyVrkVplrH/exec';
 firebase.initializeApp({ apiKey: 'AIzaSyBysiUHX0Kl-FsDjhz_R9Ce29l9eSFmaZ4', authDomain: 'dss-pc.firebaseapp.com', projectId: 'dss-pc',
   appId: '1:147136938367:web:520dc47476b09c96f7da4a' });
 const auth = firebase.auth(), $ = id => document.getElementById(id);
