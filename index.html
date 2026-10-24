@@ -5,42 +5,72 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>EMS (GAS) · โรงเรียนปากช่อง</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root { --brand: #7a1f2b; --bg: #1b1416; }
-  html, body { margin: 0; height: 100%; background: var(--bg); font-family: 'IBM Plex Sans Thai', system-ui, sans-serif; }
+  /* หน้าเข้าสู่ระบบ: ลอกแบบหน้า gate ของ EMS (app/gate.js) ให้หน้าตาเหมือนระบบเดิม */
+  :root { --brand:#9a2f3f; --brand-soft:#fcf4f6; --bg:#f5f7fa; --surface:#fff; --line:#e6e9ee; --text:#26323f; --muted:#67737f; --bad:#b3261e;
+    --shadow:0 1px 2px rgba(38,50,63,.04),0 4px 12px rgba(38,50,63,.06),0 12px 28px rgba(38,50,63,.04); }
+  @media (prefers-color-scheme:dark) { :root { --bg:#14171c; --surface:#1b1f26; --line:#2c333f; --text:#f1f4f8; --muted:#94a0b2; --brand:#f4a9a9; --bad:#f2b8b5; } }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font-family: "IBM Plex Sans Thai", system-ui, "Segoe UI", sans-serif; }
+  button { font: inherit; color: inherit; cursor: pointer; }
   #app { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; display: none; background: var(--bg); }
   #app.on { display: block; }
-  #gate { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; padding: 16px;
-    background: radial-gradient(1200px 600px at 50% -10%, #5a1a24 0%, var(--bg) 60%); }
+  #gate { position: fixed; inset: 0; z-index: 100; background: var(--bg); display: grid; grid-template-columns: minmax(0,1.05fr) minmax(0,1fr); overflow: auto; }
   #gate[hidden] { display: none; }
-  .card { width: min(380px, 100%); background: #fff; border-radius: 18px; padding: 28px 24px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,.35); }
-  .card img { width: 64px; height: 64px; }
-  h1 { font-size: 20px; margin: 12px 0 4px; color: #222; }
-  p { margin: 0 0 20px; color: #666; font-size: 14px; line-height: 1.6; }
-  button { width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 16px; border-radius: 12px;
-    border: 1px solid #dadce0; background: #fff; color: #222; font: inherit; font-size: 15px; cursor: pointer; }
-  button:hover { background: #f7f7f7; } button:disabled { opacity: .6; cursor: default; }
-  .msg { min-height: 20px; margin-top: 14px; font-size: 13px; color: #b42318; }
-  .muted { color: #888; font-size: 12px; margin-top: 16px; }
-  #busy { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; color: #f2d8dc; font-size: 15px; }
+  .g-hero { background: radial-gradient(120% 90% at 20% 10%,#a02b3a 0%,#7a1f2b 45%,#4a0f19 100%); color: #fff; display: flex; flex-direction: column; justify-content: space-between; padding: clamp(24px,5vw,56px); position: relative; overflow: hidden; }
+  .g-hero::after { content: ""; position: absolute; right: -140px; bottom: -140px; width: 420px; height: 420px; border-radius: 50%; border: 56px solid rgba(255,255,255,.05); }
+  .g-hero img { width: clamp(96px,14vw,150px); height: auto; filter: drop-shadow(0 8px 20px rgba(0,0,0,.35)); }
+  .g-hero h1 { font-size: clamp(2.6rem,6vw,4.2rem); font-weight: 700; line-height: 1.05; margin: 20px 0 8px; }
+  .g-hero .full { font-size: 1.1rem; opacity: .9; font-weight: 500; }
+  .g-hero .school { margin-top: 4px; color: #e8c777; font-weight: 600; }
+  .g-points { display: grid; gap: 12px; margin-top: 32px; position: relative; z-index: 1; }
+  .g-points div { display: flex; gap: 12px; align-items: flex-start; font-size: .95rem; opacity: .92; line-height: 1.5; }
+  .g-points svg { width: 22px; height: 22px; flex: none; stroke: #e8c777; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-top: 2px; }
+  .g-form { display: flex; align-items: center; justify-content: center; padding: clamp(24px,5vw,56px); }
+  .g-card { width: 100%; max-width: 400px; }
+  .g-card h2 { font-size: 1.6rem; font-weight: 700; margin: 0 0 6px; }
+  .muted { color: var(--muted); margin: 0; }
+  .g-gbtn { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; min-height: 52px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); font-weight: 600; font-size: 1rem; margin-top: 22px; box-shadow: var(--shadow); }
+  .g-gbtn:hover { border-color: var(--brand); } .g-gbtn:disabled { opacity: .6; cursor: default; }
+  .g-gbtn svg { width: 22px; height: 22px; }
+  .g-msg { min-height: 20px; margin-top: 14px; font-size: .88rem; color: var(--bad); line-height: 1.5; }
+  .g-note { margin-top: 12px; font-size: .82rem; color: var(--muted); line-height: 1.6; }
+  @media (max-width:860px) {
+    #gate { display: block; }
+    .g-hero { padding: 28px 24px 26px; } .g-hero h1 { margin-top: 0; } .g-points, .g-hero .copy { display: none; } .g-hero::after { display: none; }
+    .g-hero .top-row { display: flex; gap: 16px; align-items: center; }
+    .g-hero img { width: 72px; }
+    .g-form { padding: 24px 20px 40px; }
+  }
+  #busy { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 15px; }
   #busy[hidden] { display: none; }
 </style>
 </head>
 <body>
 <div id="busy">กำลังตรวจสอบการเข้าสู่ระบบ…</div>
 <div id="gate" hidden>
-  <div class="card">
-    <img src="https://dss-pc.web.app/icons/icon-192.png" alt="" onerror="this.remove()">
-    <h1>EMS ระบบจัดการคะแนน</h1>
-    <p>ฉบับทดลองบน Google Sheets · เข้าด้วยบัญชี Google ที่ลงทะเบียนเป็นบุคลากรไว้ (บัญชีโรงเรียนหรือ Gmail)</p>
-    <button id="gbtn" type="button">
-      <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
-      เข้าสู่ระบบด้วย Google
-    </button>
-    <div class="msg" id="msg"></div>
-    <div class="muted">ระบบจริงยังอยู่ที่ dss-pc.web.app</div>
-  </div>
+  <section class="g-hero" aria-label="เกี่ยวกับระบบ">
+    <div class="top-row">
+      <img src="app/icons/school-logo.png" alt="ตราโรงเรียนปากช่อง">
+      <div><h1>EMS</h1><div class="full">Education Management System</div><div class="school">โรงเรียนปากช่อง · นครราชสีมา</div></div>
+    </div>
+    <div class="g-points">
+      <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg><span>เช็กชื่อและกรอกคะแนนได้ในไม่กี่แตะ ใช้ได้ทั้งมือถือและคอม</span></div>
+      <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>เอกสารและไฟล์สำรองทั้งหมดเก็บไว้ที่ Google Drive ของโรงเรียน</span></div>
+      <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg><span>เห็นเฉพาะเมนูตามบทบาทของตนเอง ข้อมูลนักเรียนปลอดภัย</span></div>
+    </div>
+    <div class="copy" style="color:rgba(255,255,255,.65);position:relative;z-index:1;margin-top:28px;font-size:.85rem">© โรงเรียนปากช่อง · งานพัฒนาและบริการระบบดิจิทัลโรงเรียน<div style="font-size:.78rem;margin-top:2px" translate="no">Digital System Development and Services in School (DSDS)</div></div>
+  </section>
+  <section class="g-form"><div class="g-card">
+    <h2>เข้าสู่ระบบ</h2>
+    <p class="muted">ใช้บัญชี Google ของโรงเรียน หรือ Gmail ที่ลงทะเบียนเป็นบุคลากรไว้</p>
+    <button class="g-gbtn" id="gbtn" type="button">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.6 5.9c4.5-4.2 7-10.3 7-17.6z"/><path fill="#FBBC05" d="M10.5 28.7a14.5 14.5 0 0 1 0-9.4l-7.9-6.1a24 24 0 0 0 0 21.6z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.8 2.3-8.3 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
+      เข้าสู่ระบบด้วย Google</button>
+    <div class="g-msg" id="msg"></div>
+    <p class="g-note">ติดปัญหาเข้าสู่ระบบ? แจ้งงานพัฒนาและบริการระบบดิจิทัลโรงเรียน</p>
+  </div></section>
 </div>
 <iframe id="app" title="EMS" allow="clipboard-write; fullscreen"></iframe>
 
