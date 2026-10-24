@@ -34,6 +34,16 @@
   .g-gbtn { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; min-height: 52px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); font-weight: 600; font-size: 1rem; margin-top: 22px; box-shadow: var(--shadow); }
   .g-gbtn:hover { border-color: var(--brand); } .g-gbtn:disabled { opacity: .6; cursor: default; }
   .g-gbtn svg { width: 22px; height: 22px; }
+  .g-or { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: .85rem; margin: 22px 0 14px; }
+  .g-or::before, .g-or::after { content: ""; height: 1px; background: var(--line); flex: 1; }
+  .g-roles { display: grid; gap: 10px; }
+  .g-role { display: flex; align-items: center; gap: 12px; text-align: left; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); min-height: 60px; width: 100%; }
+  .g-role:hover { border-color: var(--brand); background: var(--brand-soft); }
+  .g-role b { display: block; line-height: 1.3; }
+  .g-role .s { display: block; font-size: .82rem; color: var(--muted); line-height: 1.35; }
+  .g-role .ico { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; flex: none; background: var(--brand-soft); color: var(--brand); }
+  .g-role .ico.gold { background: #fcf8ee; color: #a87f2c; }
+  .g-role .ico svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
   .g-msg { min-height: 20px; margin-top: 14px; font-size: .88rem; color: var(--bad); line-height: 1.5; }
   .g-note { margin-top: 12px; font-size: .82rem; color: var(--muted); line-height: 1.6; }
   @media (max-width:860px) {
@@ -69,11 +79,18 @@
       <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.6 5.9c4.5-4.2 7-10.3 7-17.6z"/><path fill="#FBBC05" d="M10.5 28.7a14.5 14.5 0 0 1 0-9.4l-7.9-6.1a24 24 0 0 0 0 21.6z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.8 2.3-8.3 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
       เข้าสู่ระบบด้วย Google</button>
     <div class="g-msg" id="msg"></div>
-    <p class="g-note">ติดปัญหาเข้าสู่ระบบ? แจ้งงานพัฒนาและบริการระบบดิจิทัลโรงเรียน</p>
+    <div class="g-or">ยังเข้าใช้งานไม่ได้?</div>
+    <div class="g-roles">
+      <button class="g-role" type="button" data-contact="join"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span><b>ขอเพิ่มชื่อเข้าระบบ</b><span class="s">ครูใหม่ / ยังไม่มีอีเมลในระบบ</span></span></button>
+      <button class="g-role" type="button" data-contact="login"><span class="ico gold"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5h13L22 12v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/></svg></span><span><b>ติดต่อแอดมิน / แจ้งปัญหา</b><span class="s">เข้าไม่ได้ ใช้งานติดขัด ข้อเสนอแนะ</span></span></button>
+      <button class="g-role" type="button" data-sysmenu><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span><span><b>ระบบอื่นของโรงเรียน</b><span class="s">รับหนังสือ บุคลากร บัญชีผู้ใช้ และระบบอื่น ๆ</span></span></button>
+    </div>
+    <p class="g-note">ดูแลระบบโดย งานพัฒนาและบริการระบบดิจิทัลโรงเรียน</p>
   </div></section>
 </div>
 <iframe id="app" title="EMS" allow="clipboard-write; fullscreen"></iframe>
 
+<script src="https://pcschool-dev.github.io/dsds/sysmenu.js" data-current="dss" data-fab="off" data-accent="#7a1f2b" data-grad="linear-gradient(135deg,#7a1f2b,#a3485a)" defer></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script>
@@ -86,6 +103,7 @@ const auth = firebase.auth(), $ = id => document.getElementById(id);
 const app = $('app'), gate = $('gate'), busy = $('busy'), msg = $('msg'), btn = $('gbtn');
 let appWin = null;
 
+let pendingCmd = null;
 function showGate() { busy.hidden = true; gate.hidden = false; app.classList.remove('on'); app.removeAttribute('src'); appWin = null; btn.disabled = false; }
 function showApp() { busy.hidden = true; gate.hidden = true; if (!app.getAttribute('src')) app.src = EXEC; app.classList.add('on'); }
 async function sendToken(win, force) {
@@ -102,9 +120,15 @@ window.addEventListener('message', ev => {
   if (!d || d.tes !== 'emsgas' || !/\.googleusercontent\.com$/.test(new URL(ev.origin).hostname)) return;
   if (!isMine(ev.source)) return;      // ต้องเป็นหน้าที่อยู่ใน iframe ของเราเท่านั้น (กันหน้าอื่นมาขอบัตร)
   appWin = ev.source;
-  if (d.kind === 'hello') sendToken(ev.source, false);
+  if (d.kind === 'hello') sendToken(ev.source, false).then(() => { if (pendingCmd) { ev.source.postMessage(Object.assign({ tes: 'emsgas-wrap', token: '' }, pendingCmd), '*'); pendingCmd = null; } });
   else if (d.kind === 'refresh') sendToken(ev.source, true);
   else if (d.kind === 'logout' || d.kind === 'login') auth.signOut().then(showGate);
+});
+/* ขอเพิ่มชื่อ / ติดต่อแอดมิน: เปิด EMS ในโหมดยังไม่เข้าสู่ระบบ แล้วให้ EMS เปิดแบบฟอร์มติดต่อของมันเอง (ส่งถึงแอดมินใน EMS-GAS) */
+document.querySelectorAll('[data-contact]').forEach(b => b.onclick = () => {
+  pendingCmd = { cmd: 'contact', k: b.dataset.contact };
+  if (appWin) { appWin.postMessage(Object.assign({ tes: 'emsgas-wrap', token: '' }, pendingCmd), '*'); pendingCmd = null; }
+  gate.hidden = true; busy.hidden = true; if (!app.getAttribute('src')) app.src = EXEC; app.classList.add('on');
 });
 btn.onclick = async () => {
   btn.disabled = true; msg.textContent = '';
